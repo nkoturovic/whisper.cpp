@@ -2716,7 +2716,7 @@ static void ggml_vk_buffer_write_nc_async(ggml_backend_vk_context * ctx, vk_cont
     VkBufferCopy buf_copy{ 0, offset, copy_size };
 
     ggml_vk_sync_buffers(subctx);
-    vkCmdCopyBuffer(subctx->s->buffer, reinterpret_cast<VkBuffer*>(&staging->buffer), dst->buffer, 1, &buf_copy);
+    vkCmdCopyBuffer(subctx->s->buffer, *reinterpret_cast<VkBuffer*>(&staging->buffer), dst->buffer, 1, &buf_copy);
 
     for (uint64_t i3 = 0; i3 < ne3; i3++) {
         for (uint64_t i2 = 0; i2 < ne2; i2++) {
@@ -2791,7 +2791,7 @@ static void ggml_vk_buffer_write_2d_async(vk_context subctx, vk_buffer& dst, siz
         copy_size};
 
     ggml_vk_sync_buffers(subctx);
-    vkCmdCopyBuffer(subctx->s->buffer, reinterpret_cast<VkBuffer*>(&staging_buffer->buffer), dst->buffer, 1, &buf_copy);
+    vkCmdCopyBuffer(subctx->s->buffer, *reinterpret_cast<VkBuffer*>(&staging_buffer->buffer), dst->buffer, 1, &buf_copy);
 
     if (width == spitch) {
         deferred_memcpy((uint8_t *)staging_buffer->ptr, src, width * height, &subctx->in_memcpys);
@@ -2927,7 +2927,7 @@ static void ggml_vk_buffer_copy_async(vk_context& ctx, vk_buffer& dst, size_t ds
 
     VkBufferCopy bc{ src_offset, dst_offset, size };
 
-    vkCmdCopyBuffer(ctx->s->buffer, reinterpret_cast<VkBuffer*>(&src->buffer), dst->buffer, 1, &bc);
+    vkCmdCopyBuffer(ctx->s->buffer, *reinterpret_cast<VkBuffer*>(&src->buffer), dst->buffer, 1, &bc);
 }
 
 static void ggml_vk_buffer_copy(vk_buffer& dst, size_t dst_offset, vk_buffer& src, size_t src_offset, size_t size) {
