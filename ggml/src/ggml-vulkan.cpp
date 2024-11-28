@@ -2790,6 +2790,7 @@ static void ggml_vk_buffer_write_2d_async(vk_context subctx, vk_buffer& dst, siz
         offset,
         copy_size};
 
+
     ggml_vk_sync_buffers(subctx);
     vkCmdCopyBuffer(subctx->s->buffer, reinterpret_cast<VkBuffer>(staging_buffer->buffer), dst->buffer, 1, &buf_copy);
 
